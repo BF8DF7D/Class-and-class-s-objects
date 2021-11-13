@@ -2,18 +2,18 @@
 #include "Date.h"
 #include <iomanip>
 
-void SetDateData(Date* date) {
+void Date::SetFormat() {
 	bool False_Input_Value;
 	do {
 		std::cout << " Дата: ";
-		False_Input_Value = BoolFormatInputDate(date);
+		False_Input_Value = this->SetBool();
 		if (False_Input_Value) {
 			std::cout << "\n <Дата введена некорректно>" << std::endl;
 		}
 	} while (False_Input_Value);
 }
 
-bool BoolFormatInputDate(Date* date){
+bool Date::SetBool(){
 	enum Limit_Value {
 		Quantity_input_value = 3,
 		Minimum_for_days_and_months = 0,
@@ -24,10 +24,10 @@ bool BoolFormatInputDate(Date* date){
 		Clean_input_stream = '\n'
 	};
 
-	bool False_Input_Value = scanf("%d.%d.%d", &date->day, &date->mounth, &date->year) != Quantity_input_value
-		|| (date->day <= Minimum_for_days_and_months || date->day > Maximum_day)
-		|| (date->mounth <= Minimum_for_days_and_months || date->mounth > Maximum_mounth)
-		|| (date->year <= Minimum_value_for_years || date->year > Maximum_years)
+	bool False_Input_Value = scanf("%d.%d.%d", &this->day, &this->mounth, &this->year) != Quantity_input_value
+		|| (this->day <= Minimum_for_days_and_months || this->day > Maximum_day)
+		|| (this->mounth <= Minimum_for_days_and_months || this->mounth > Maximum_mounth)
+		|| (this->year <= Minimum_value_for_years || this->year > Maximum_years)
 		|| std::cin.get() != Clean_input_stream;
 	
 	if (False_Input_Value)
@@ -36,9 +36,21 @@ bool BoolFormatInputDate(Date* date){
 	return False_Input_Value;
 }
 
-void PrintDateInfo(Date date) {
-	std::cout << std::setfill('0') << std::setw(2) << date.day << ".";
-	std::cout << std::setfill('0') << std::setw(2) << date.mounth << ".";
-	std::cout << std::setw(4) << date.year;
+void Date::PrintInfo() {
+	int* date_array = this->GetInfo();
+	enum Value_number_of_info_array {
+		day = 0,
+		mounth,
+		year
+	};
+
+	std::cout << std::setfill('0') << std::setw(2) << date_array[day] << ".";
+	std::cout << std::setfill('0') << std::setw(2) << date_array[mounth] << ".";
+	std::cout << std::setw(4) << date_array[year];
 	std::cout.fill(' ');
+}
+
+int* Date::GetInfo() {
+	int date_array[] = { this->day, this->mounth, this->year };
+	return date_array;
 }

@@ -1,12 +1,17 @@
 #pragma once
 #include <iostream>
 
-struct Date {
-	int day,
-		mounth,
-		year;
-};
+class Date {
+private: int day,
+	mounth,
+	year;
 
-bool BoolFormatInputDate(Date*);
-void SetDateData(Date*);
-void PrintDateInfo(Date);
+public: bool SetBool();
+public: void SetFormat();
+public: void PrintInfo();
+
+public: int* GetInfo();
+
+public: Date() {};
+public: ~Date() {};
+};
