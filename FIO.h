@@ -1,11 +1,16 @@
 #include <iostream>
 
-struct FIO {
-	std::string Last_Name,
-		First_Name,
-		Patronymic,
-		Full_Name;
-};
+class FIO {
+private: std::string Last_Name,
+	First_Name,
+	Patronymic,
+	Full_Name;
 
-bool BoolFormatInputFIO(FIO*);
-void SetFIOData(FIO*);
+public: bool SetBool();
+public: void SetFormat();
+
+public: std::string* GetInfo();
+
+public: FIO() {};
+public: ~FIO() {};
+};

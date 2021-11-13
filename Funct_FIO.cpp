@@ -4,35 +4,38 @@
 #include <sstream>
 #include <iomanip>
 
-void SetFIOData(FIO* fio) {
+void FIO::SetFormat() {
 	bool False_Input_Value;
 	do {
 		std::cout << " ФИО: ";
-		False_Input_Value = BoolFormatInputFIO(fio);
+		False_Input_Value = this->SetBool();
 		if (False_Input_Value) {
 			std::cout << "\n <ФИО введено некорректно>" << std::endl;
 		}
 	} while (False_Input_Value);
 }
 
-bool BoolFormatInputFIO(FIO* fio) {
-	std::getline(std::cin, fio->Full_Name);
+bool FIO::SetBool() {
+	std::getline(std::cin, this->Full_Name);
 	std::cin.clear();
-	std::stringstream Name_elements_stream(fio->Full_Name);
-	std::string name_elements[] = { fio->Last_Name, fio->First_Name, fio->Patronymic };
+	std::stringstream Name_elements_stream(this->Full_Name);
+	std::string *name_elements[] = { &this->Last_Name, &this->First_Name, &this->Patronymic };
 
-	enum Limit_Value {
-		Quantity_input_value = 3,
-	};
-	int Input_value_numbers = 0;
-	for (std::string buffer; Name_elements_stream >> buffer; Input_value_numbers++) {
-		if (Input_value_numbers < Quantity_input_value) 
-			name_elements[Input_value_numbers] = buffer;
-		else if (Input_value_numbers > Quantity_input_value)
+	bool False_Input_Value;
+	for (std::string* element : name_elements) {
+		if (!Name_elements_stream.eof()) {
+			Name_elements_stream >> *element;
+		}
+		else {
 			break;
+		}
 	}
-
-	bool False_Input_Value = Input_value_numbers != Quantity_input_value;
+	bool False_Input_Value = this->Patronymic.empty() || Name_elements_stream.eof();
 
 	return False_Input_Value;
+}
+
+std::string* FIO::GetInfo() {
+	std::string name_elements[] = { this->Last_Name, this->First_Name, this->Patronymic, this->Full_Name };
+	return name_elements;
 }
