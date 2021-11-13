@@ -35,7 +35,7 @@ bool FIO::SetBool() {
 	return False_Input_Value;
 }
 
-std::string* FIO::GetInfo() {
-	std::string name_elements[] = { this->Last_Name, this->First_Name, this->Patronymic, this->Full_Name };
-	return name_elements;
+std::array<std::string, 4> FIO::GetInfo() {
+	std::array<std::string, 4> name = { this->Last_Name, this->First_Name, this->Patronymic, this->Full_Name };
+	return name;
 }

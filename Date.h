@@ -1,5 +1,5 @@
-#pragma once
 #include <iostream>
+#include <array>
 
 class Date {
 private: int day,
@@ -10,7 +10,7 @@ public: bool SetBool();
 public: void SetFormat();
 public: void PrintInfo();
 
-public: int* GetInfo();
+public: std::array<int, 3> GetInfo();
 
 public: Date() {};
 public: ~Date() {};

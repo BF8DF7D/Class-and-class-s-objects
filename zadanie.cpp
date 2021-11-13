@@ -4,9 +4,12 @@
 #include <iostream>
 #include <conio.h>
 #include <string>
+#include <Windows.h>
 
 int main()
 {
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
 
     Disease prosrtuda, otravlenie;
     prosrtuda = GetsDiseaseData();
@@ -17,14 +20,15 @@ int main()
 
     std::cout << std::endl << std::endl;
 
-    Doctor unname;
-    unname = GetsDoctorData();
-    PutsDoctorInfo(unname);
+    Doctor* doctor = new Doctor;
+    doctor->SetFormat();
+    std::cout << std::endl;
+    doctor->PrintInfo();
 
     std::cout << std::endl << std::endl;
 
     Talon num;
-    num = GetsTalonData(&unname);
+    num = GetsTalonData(doctor);
     PutsTalonInfo(num);
 
     std::cout << std::endl << std::endl;

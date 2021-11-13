@@ -1,9 +1,16 @@
 #include <iostream>
+#include <array>
 
-struct Pasport {
-	int Series, //Cерия бланка паспорта
-		Number; //Порядковый номер паспорта в серии
+class Pasport {
+private: int Series,
+	Number;
+
+public: void SetFormat();
+public: bool SetBool();
+public: void PrintInfo();
+
+public: std::array<int, 2> GetInfo();
+
+public:	Pasport() {};
+public:	~Pasport() {};
 };
-bool BoolFormatInputPasport(Pasport*);
-void SetPasportData(Pasport*);
-void PrintPasportInfo(Pasport);

@@ -2,18 +2,18 @@
 #include "Time.h"
 #include <iomanip>
 
-void SetTimeData(Time* time) {
+void Time::SetFormat() {
 	bool False_Input_Value;
 	do {
 		std::cout << " Время: ";
-		False_Input_Value = BoolFormatInputTime(time);
+		False_Input_Value = this->SetBool();
 		if (False_Input_Value) {
 			std::cout << "\n <Время введено некорректно>" << std::endl;
 		}
 	} while (False_Input_Value);
 }
 
-bool BoolFormatInputTime(Time* time) {
+bool Time::SetBool() {
 	
 	enum Limit_Value {
 		Quantity_input_value = 2,
@@ -23,9 +23,9 @@ bool BoolFormatInputTime(Time* time) {
 		Clean_input_stream = '\n'
 	};
 	
-	bool False_Input_Value = scanf("%d.%d", &time->hour, &time->minutes) != Quantity_input_value
-		|| (time->hour < Minimum_value_for_all || time->hour > Maximum_hour)
-		|| (time->minutes < Minimum_value_for_all || time->minutes > Maximum_minutes)
+	bool False_Input_Value = scanf("%d.%d", &this->hour, &this->minutes) != Quantity_input_value
+		|| (this->hour < Minimum_value_for_all || this->hour > Maximum_hour)
+		|| (this->minutes < Minimum_value_for_all || this->minutes > Maximum_minutes)
 		|| std::cin.get() != Clean_input_stream;
 	
 	if (False_Input_Value)
@@ -34,8 +34,19 @@ bool BoolFormatInputTime(Time* time) {
 	return False_Input_Value;
 }
 
-void PrintTimeInfo(Time time) {
-	std::cout << std::setfill('0') << std::setw(2) << time.hour << ".";
-	std::cout << std::setfill('0') << std::setw(2) << time.minutes;
+std::array<int, 2> Time::GetInfo() {
+	std::array<int, 2> time = { this->hour, this->minutes };
+	return time;
+}
+
+void Time::PrintInfo() {
+	std::array<int, 2> time = this->GetInfo();
+	enum Value_number_in_info_array {
+		hour = 0,
+		minutes
+	};
+
+	std::cout << std::setfill('0') << std::setw(2) << time[hour] << ".";
+	std::cout << std::setfill('0') << std::setw(2) << time[minutes];
 	std::cout.fill(' ');
 }

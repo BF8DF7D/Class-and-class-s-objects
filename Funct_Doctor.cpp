@@ -4,29 +4,33 @@
 #include <iomanip>
 #include <string>
 
-using std::cout;
-
-//Созание структуры "Доктор"
-Doctor GetsDoctorData() {
-	Doctor* doctor = new Doctor;
+void Doctor::SetFormat() {
 
 	printf(" <Ввод информации о докторе>\n");
-	SetFIOData(&doctor->Fio);
+	this->Fio.SetFormat();
 
 	std::cout << " Должность: ";
-	std::getline(std::cin, doctor->dolgnost);
+	std::getline(std::cin, this->dolgnost);
 	
 	std::cout << " <Ввод завершён>" << std::endl;
-	return *doctor;
 }
 
-
-
-
-//Вывод структуры "Доктор"
-void PutsDoctorInfo(Doctor doctor) {
+void Doctor::PrintInfo() {
+	std::array<std::string, 4> fio = this->GetFIO().GetInfo();
+	enum Value_number_in_info_array {
+		full_name = 3
+	};
+	&this->GetDolgnost();
 	std::cout << " | ";
-	std::cout << std::setfill(' ') << std::setw(45) << doctor.Fio.Full_Name;
+	std::cout << std::setfill(' ') << std::setw(45) << fio[full_name];
 	std::cout << " | ";
-	std::cout << std::setw(20) << doctor.dolgnost << " |" << std::endl;
+	std::cout << std::setw(20) << this->GetDolgnost() << " |" << std::endl;
+}
+
+FIO Doctor::GetFIO() {
+	return this->Fio;
+}
+
+std::string Doctor::GetDolgnost() {
+	return this->dolgnost;
 }

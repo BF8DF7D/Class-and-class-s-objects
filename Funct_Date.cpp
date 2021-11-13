@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "Date.h"
 #include <iomanip>
+#include <sstream>
 
 void Date::SetFormat() {
 	bool False_Input_Value;
@@ -36,21 +37,21 @@ bool Date::SetBool(){
 	return False_Input_Value;
 }
 
+std::array<int, 3> Date::GetInfo() {
+	std::array<int, 3> date = { this->day, this->mounth, this->year };
+	return date;
+}
+
 void Date::PrintInfo() {
-	int* date_array = this->GetInfo();
-	enum Value_number_of_info_array {
+	std::array<int,3> date = this->GetInfo();
+	enum Value_number_in_info_array {
 		day = 0,
 		mounth,
 		year
 	};
 
-	std::cout << std::setfill('0') << std::setw(2) << date_array[day] << ".";
-	std::cout << std::setfill('0') << std::setw(2) << date_array[mounth] << ".";
-	std::cout << std::setw(4) << date_array[year];
+	std::cout << std::setfill('0') << std::setw(2) << date[day] << ".";
+	std::cout << std::setfill('0') << std::setw(2) << date[mounth] << ".";
+	std::cout << std::setw(4) << date[year];
 	std::cout.fill(' ');
-}
-
-int* Date::GetInfo() {
-	int date_array[] = { this->day, this->mounth, this->year };
-	return date_array;
 }

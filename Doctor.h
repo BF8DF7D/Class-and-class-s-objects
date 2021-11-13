@@ -1,9 +1,15 @@
 #include "FIO.h"
 
-struct Doctor {
-	FIO Fio;
-	std::string dolgnost;
-};
+class Doctor {
+private: FIO Fio;
+private: std::string dolgnost;
 
-Doctor GetsDoctorData();		//Созание структуры "Доктор"
-void PutsDoctorInfo(Doctor);	//Вывод структуры "Доктор"
+public: void SetFormat();
+public: void PrintInfo();
+
+public: FIO GetFIO();
+public: std::string GetDolgnost();
+
+public: Doctor() {};
+public: ~Doctor() {};
+};
