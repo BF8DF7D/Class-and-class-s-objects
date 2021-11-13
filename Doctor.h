@@ -4,7 +4,7 @@ class Doctor {
 private: FIO Fio;
 private: std::string dolgnost;
 
-public: void SetFormat();
+public: void SetDoctor();
 public: void PrintInfo();
 
 public: FIO GetFIO();

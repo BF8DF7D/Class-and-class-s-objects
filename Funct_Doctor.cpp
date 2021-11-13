@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <string>
 
-void Doctor::SetFormat() {
+void Doctor::SetDoctor() {
 
 	printf(" <Ввод информации о докторе>\n");
 	this->Fio.SetFormat();
@@ -13,6 +13,14 @@ void Doctor::SetFormat() {
 	std::getline(std::cin, this->dolgnost);
 	
 	std::cout << " <Ввод завершён>" << std::endl;
+}
+
+FIO Doctor::GetFIO() {
+	return this->Fio;
+}
+
+std::string Doctor::GetDolgnost() {
+	return this->dolgnost;
 }
 
 void Doctor::PrintInfo() {
@@ -25,12 +33,4 @@ void Doctor::PrintInfo() {
 	std::cout << std::setfill(' ') << std::setw(45) << fio[full_name];
 	std::cout << " | ";
 	std::cout << std::setw(20) << this->GetDolgnost() << " |" << std::endl;
-}
-
-FIO Doctor::GetFIO() {
-	return this->Fio;
-}
-
-std::string Doctor::GetDolgnost() {
-	return this->dolgnost;
 }
