@@ -2,9 +2,12 @@
 #include <array>
 
 class Date {
-private: int day,
+private: std::array<int, 3> date;
+public: enum Value_number_in_Date_array {
+	day = 0,
 	mounth,
-	year;
+	year
+};
 
 public: bool SetBool();
 public: void SetFormat();

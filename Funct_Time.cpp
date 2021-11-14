@@ -23,9 +23,9 @@ bool Time::SetBool() {
 		Clean_input_stream = '\n'
 	};
 	
-	bool False_Input_Value = scanf("%d.%d", &this->hour, &this->minutes) != Quantity_input_value
-		|| (this->hour < Minimum_value_for_all || this->hour > Maximum_hour)
-		|| (this->minutes < Minimum_value_for_all || this->minutes > Maximum_minutes)
+	bool False_Input_Value = scanf("%d.%d", &this->time[hour], &this->time[minutes]) != Quantity_input_value
+		|| (this->time[hour] < Minimum_value_for_all || this->time[hour] > Maximum_hour)
+		|| (this->time[minutes] < Minimum_value_for_all || this->time[minutes] > Maximum_minutes)
 		|| std::cin.get() != Clean_input_stream;
 	
 	if (False_Input_Value)
@@ -35,16 +35,11 @@ bool Time::SetBool() {
 }
 
 std::array<int, 2> Time::GetInfo() {
-	std::array<int, 2> time = { this->hour, this->minutes };
-	return time;
+	return this->time;
 }
 
 void Time::PrintInfo() {
 	std::array<int, 2> time = this->GetInfo();
-	enum Value_number_in_info_array {
-		hour = 0,
-		minutes
-	};
 
 	std::cout << std::setfill('0') << std::setw(2) << time[hour] << ".";
 	std::cout << std::setfill('0') << std::setw(2) << time[minutes];

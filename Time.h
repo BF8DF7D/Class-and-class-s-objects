@@ -2,8 +2,11 @@
 #include <array>
 
 class Time {
-private: int hour,
-	minutes;
+private: std::array<int, 2> time;
+public: enum Value_number_in_time_array {
+	hour = 0,
+	minutes
+};
 
 public: void SetFormat();
 public: bool SetBool();
@@ -14,7 +17,3 @@ public: std::array<int, 2> GetInfo();
 public: Time() {};
 public: ~Time() {};
 };
-
-bool BoolFormatInputTime(Time*);
-void SetTimeData(Time*);
-void PrintTimeInfo(Time);

@@ -2,10 +2,13 @@
 #include <array>
 
 class FIO {
-private: std::string Last_Name,
-	First_Name,
-	Patronymic,
-	Full_Name;
+private: std::array<std::string,4> fio;
+public: enum Value_number_in_FIO_array{
+	last_name = 0,
+	first_name,
+	patronynic,
+	full_name
+};
 
 public: bool SetBool();
 public: void SetFormat();

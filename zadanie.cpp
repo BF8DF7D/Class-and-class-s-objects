@@ -11,45 +11,51 @@ int main()
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    Disease prosrtuda, otravlenie;
-    prosrtuda = GetsDiseaseData();
+    Disease* prosrtuda = new Disease, 
+        *otravlenie = new Disease;
+
+    prosrtuda->SetDisease();
     std::cout << std::endl;
-    otravlenie = GetsDiseaseData();
+    otravlenie->SetDisease();
     std::cout << std::endl;
-    PutsGiseaseInfo(prosrtuda);
+    prosrtuda->PrintInfo();
 
     std::cout << std::endl << std::endl;
 
     Doctor* doctor = new Doctor;
-    doctor->SetFormat();
+    doctor->SetDoctor();
     std::cout << std::endl;
     doctor->PrintInfo();
 
     std::cout << std::endl << std::endl;
 
-    Talon num;
-    num = GetsTalonData(doctor);
-    PutsTalonInfo(num);
+    Talon* talon = new Talon;
+    talon->SetTalon(doctor);
+    std::cout << std::endl;
+    talon->PrintInfo();
 
     std::cout << std::endl << std::endl;
 
-    Diagnosis one, two;
-    one = GetsDiagnosisData(&num, &prosrtuda);
-    two = GetsDiagnosisData(&num, &otravlenie);
-    PutsDiagnosisInfo(two);
+    Diagnosis *one = new Diagnosis, 
+        *two = new Diagnosis;
+    one->SetDiadnosis(talon, prosrtuda);
+    two->SetDiadnosis(talon, otravlenie);
+    two->PrintInfo();
 
     std::cout << std::endl << std::endl;
 
-    Pacient Bolnoi;
-    Bolnoi = GetsPacientData();
-    PrintPacientInfo(Bolnoi);
+    Pacient* bolnoi = new Pacient;
+    bolnoi->SetPacient();
+    std::cout << std::endl;
 
-    GiveDiagnosisPacient(&one, &Bolnoi);
-    GiveDiagnosisPacient(&two, &Bolnoi);
+    bolnoi->GiveDiagnosis(one);
+    bolnoi->GiveDiagnosis(two);
 
-    std::cout << std::endl << std::endl;
-    
-    PrintPacientInfo(Bolnoi);
+    bolnoi->PrintInfo();
+
+    std::cout << std::endl;
+    bolnoi->DeleteDiagnosis(0);
+    bolnoi->PrintInfo();
 
     std::string Name_Disease;
     std::cout << "Введите наименования болезни, чтобы узнать есть ли оно в истории болезни пациента" << std::endl;
@@ -59,11 +65,15 @@ int main()
         if (Name_Disease.empty())
             Exid_Value = true;
         else {
-            if (DiseaseOfPacient(Name_Disease, Bolnoi))
+            if (bolnoi->DiseaseOf(Name_Disease))
                 std::cout << " В истории болезни пациента есть \"" << Name_Disease << "\"" << std::endl;
             else
                 std::cout << " В истории блезни пациента не числится \"" << Name_Disease << "\"" << std::endl;
         }
     }
+
+    bolnoi->DeleteAll();
+    bolnoi->PrintInfo();
+
     _getch();
 }

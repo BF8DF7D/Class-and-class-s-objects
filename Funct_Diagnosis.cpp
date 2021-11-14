@@ -3,33 +3,45 @@
 #include <iomanip>
 
 
-
-//Струкутура "Диагноз"
-Diagnosis GetsDiagnosisData(Talon* Dok, Disease* Dis) {
-	Diagnosis* diagnosis = new Diagnosis;
-	diagnosis->talon = Dok;
-	diagnosis->disease = Dis;
-	
-	return *diagnosis;
+Diagnosis::Diagnosis() {
+	this->talon = nullptr;
+	this->disease = nullptr;
 }
 
+bool Diagnosis::Empty() {
+	bool Empty_Diagnosis = true;
+	if (this->talon || this->disease)
+		Empty_Diagnosis = false;
+	return Empty_Diagnosis;
+}
 
+void Diagnosis::SetDiadnosis(Talon* talon, Disease* disease) {
+	this->talon = talon;
+	this->disease = disease;
+}
 
-//Печать структуры 
-void PutsDiagnosisInfo(Diagnosis diagnosis) {
-	Date* date = &diagnosis.talon->Admission_Date;
-	Time* time = &diagnosis.talon->Admission_Time;
+Talon Diagnosis::GetTalon() {
+	return *this->talon;
+}
 
-	std::cout << " Доктор: " << diagnosis.talon->Dok->Fio.Full_Name << std::endl;
+Disease Diagnosis::GetDisease() {
+	return *this->disease;
+}
+
+void Diagnosis::PrintInfo() {
+	Date date = this->talon->GetDate();
+	Time time = this->talon->GetTime();
+	std::array <std::string, 4> name = this->GetTalon().GetDoctor().GetFIO().GetInfo();
+
+	std::cout << " Доктор: " << name[FIO::full_name] << std::endl;
 	std::cout << " Дата приёма: ";
-	PrintDateInfo(diagnosis.talon->Admission_Date);
+	date.PrintInfo();
 	std::cout << std::endl;
 	std::cout << " Время приёма: ";
-	PrintTimeInfo(diagnosis.talon->Admission_Time);
+	time.PrintInfo();
 	std::cout << std::endl;
 	std::cout << " Номер кабинета: ";
-	std::cout << std::setfill('0') << std::setw(3) << diagnosis.talon->kabinet << std::endl;
+	std::cout << std::setfill('0') << std::setw(3) << this->GetTalon().GetKabinet() << std::endl;
 	std::cout.fill(' ');
-
-	PutsGiseaseInfo(*diagnosis.disease);
+	this->GetDisease().PrintInfo();
 }

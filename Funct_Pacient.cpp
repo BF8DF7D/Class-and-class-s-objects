@@ -3,34 +3,38 @@
 #include <iostream>
 #include <iomanip>
 
-//Создание структуры Pacient
-Pacient GetsPacientData() {
 
-	Pacient* pacient = new Pacient;
+bool BoolFormatCard(int* number);
+
+void Pacient::SetPacient() {
+
 	std::cout << " <Ввод информации о пацинте>" << std::endl;
 	
-	SetFIOData(&pacient->Fio);
-	SetDateData(&pacient->Data_Brith);
-	SetPasportData(&pacient->pasport);
+	this->Fio.SetFormat();
+	this->Date_Brith.SetFormat();
+	this->pasport.SetFormat();
 
 	bool False_Input_Value;
 	do {
-		False_Input_Value = BoolFormatInputCard(&pacient->Medical_Card);
+		False_Input_Value = BoolFormatCard(&this->Medical_Card);
 		if (False_Input_Value) {
 			std::cout << "\n < Номер мед. карты введён некорректно>" << std::endl;
 		}
 	} while (False_Input_Value);
 
-	for (Diagnosis* &diagnosis : pacient->Diagnosis_History)
-		diagnosis = nullptr;
+	enum Limit_Value {
+		Maximum_quantity_values = 51
+	};
+	this->Diagnosis_History = new Diagnosis*[51];
+	for (int dignosis_number = 0; dignosis_number < Maximum_quantity_values; dignosis_number++)
+		this->Diagnosis_History[dignosis_number] = nullptr;
 
-	pacient->Diagnosis_point = 0;
+	this->Diagnosis_point = 0;
 	
 	std::cout << " <Ввод завершён>" << std::endl;
-	return *pacient;
 }
 
-bool BoolFormatInputCard(int* number) {
+bool BoolFormatCard(int* number) {
 	enum Limit_Value {
 		Minimum_number = 0x1,
 		Maximum_number = 0xFFFFFFF,
@@ -49,35 +53,69 @@ bool BoolFormatInputCard(int* number) {
 	return False_Input_Value;
 }
 
+FIO Pacient::GetFIO() {
+	return this->Fio;
+}
 
+Date Pacient::GetDate() {
+	return this->Date_Brith;
+}
 
-//Вывод стурктуры Pacient
-void PrintPacientInfo(Pacient pacient) {
+Pasport Pacient::GetPasport() {
+	return this->pasport;
+}
 
+int Pacient::GetCard() {
+	return this->Medical_Card;
+}
+
+std::array<Diagnosis, 51> Pacient::GetHistory() {
+	std::array<Diagnosis, 51> diagnosis_history;
+	for (int dignosis_number = 0; true; dignosis_number++) {
+		if (this->Diagnosis_History[dignosis_number]) 
+			diagnosis_history[dignosis_number] = *this->Diagnosis_History[dignosis_number];
+		else 
+			break;
+	}
+	return diagnosis_history;
+}
+
+void Pacient::GiveDiagnosis(Diagnosis* diagnos) {
+	enum Limit_Value {
+		Maximum_value_for_array = 51
+	};
+	if (this->Diagnosis_point < Maximum_value_for_array) {
+		this->Diagnosis_History[this->Diagnosis_point] = diagnos;
+		this->Diagnosis_point++;
+	}
+}
+
+void Pacient::PrintInfo() {
+	std::array<std::string, 4> name = this->GetFIO().GetInfo();
 	std::cout << " <Персональные данные>" << std::endl;
-	std::cout << " ФИО пациента            : " << pacient.Fio.Full_Name << std::endl;
+	std::cout << " ФИО пациента            : " << name[FIO::full_name] << std::endl;
 	std::cout << " Серия и номер паспорта  : ";
-	PrintPasportInfo(pacient.pasport);
+	this->GetPasport().PrintInfo();
 	std::cout << std::endl;
 	std::cout << " Дата рождения           : ";
-	PrintDateInfo(pacient.Data_Brith);
+	this->GetDate().PrintInfo();
 	std::cout << std::endl;
 	std::cout << " Номер медецинской карты : ";
-	std::cout << std::uppercase << std::hex << pacient.Medical_Card << std::endl;
+	std::cout << std::uppercase << std::hex << this->GetCard() << std::endl;
 	std::cout << " <Краткая история болезни>" << std::endl;
 	std::cout << std::dec;
-	if (pacient.Diagnosis_point > 0) {
-		std::cout << " Общее число зарегистрированных заболеваний: " << pacient.Diagnosis_point << std::endl;
+	if (this->Diagnosis_point> 0) {
+		std::cout << " Общее число зарегистрированных заболеваний: " << this->Diagnosis_point << std::endl;
 		std::cout << "    Наименование болезни :       Дата : Время :" << std::endl;
-
-		for (Diagnosis* diagnosis : pacient.Diagnosis_History) {
-			if (diagnosis) {
+		std::array<Diagnosis, 51> diagnosis_history = this->GetHistory();
+		for (Diagnosis diagnosis : diagnosis_history) {
+			if (!diagnosis.Empty()) {
 				std::cout << " ";
-				std::cout << std::setw(23) << diagnosis->disease->Name_Disease;
+				std::cout << std::setw(23) << diagnosis.GetDisease().GetName();
 				std::cout << " : ";
-				PrintDateInfo(diagnosis->talon->Admission_Date);
+				diagnosis.GetTalon().GetDate().PrintInfo();
 				std::cout << " : ";
-				PrintTimeInfo(diagnosis->talon->Admission_Time);
+				diagnosis.GetTalon().GetTime().PrintInfo();
 				std::cout << " :" << std::endl;
 			}
 			else
@@ -88,31 +126,40 @@ void PrintPacientInfo(Pacient pacient) {
 		std::cout << " Нет заригестрированных заболеваний " << std::endl;
 }
 
-
-//Привязать диагноз к пациенту
-void GiveDiagnosisPacient(Diagnosis* diagnos, Pacient* pacient) {
-	enum Limit_Value {
-		Maximum_value_for_array = 50
-	};
-	if (pacient->Diagnosis_point < Maximum_value_for_array) {
-		pacient->Diagnosis_History[pacient->Diagnosis_point] = diagnos;
-		pacient->Diagnosis_point++;
-	}
-}
-
-//Переносил ли пациент данное заболевание.
-bool DiseaseOfPacient(std::string Name_Disease, Pacient pacient) {
-	
+bool Pacient::DiseaseOf(std::string Name_Disease) {
+	std::array<Diagnosis, 51> diagnosis_history = this->GetHistory();
 	bool Serched_disease_is_present = false;
-	for (Diagnosis* diagnosis : pacient.Diagnosis_History) {
-		if (!diagnosis)
+	for (Diagnosis diagnosis : diagnosis_history) {
+		if (diagnosis.Empty())
 			break;
-		if (diagnosis->disease->Name_Disease == Name_Disease) {
+		if (diagnosis.GetDisease().GetName() == Name_Disease) {
 			Serched_disease_is_present = true;
 			break;
 		}
 	}
 
 	return Serched_disease_is_present;
+}
 
+void Pacient::DeleteDiagnosis(int number_diagnosis) {
+	if (number_diagnosis < this->Diagnosis_point) {
+		delete this->Diagnosis_History[number_diagnosis];
+		for (; number_diagnosis < this->Diagnosis_point - 1; number_diagnosis++)
+			this->Diagnosis_History[number_diagnosis] = this->Diagnosis_History[number_diagnosis + 1];
+		this->Diagnosis_History[number_diagnosis] = nullptr;
+		this->Diagnosis_point--;
+	}
+}
+
+void Pacient::DeleteAll() {
+	delete[] this->Diagnosis_History;
+
+	enum Limit_Value {
+		Maximum_quantity_values = 51
+	};
+	this->Diagnosis_History = new Diagnosis * [51];
+	for (int dignosis_number = 0; dignosis_number < Maximum_quantity_values; dignosis_number++)
+		this->Diagnosis_History[dignosis_number] = nullptr;
+
+	this->Diagnosis_point = 0;
 }

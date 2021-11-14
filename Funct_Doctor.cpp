@@ -25,12 +25,8 @@ std::string Doctor::GetDolgnost() {
 
 void Doctor::PrintInfo() {
 	std::array<std::string, 4> fio = this->GetFIO().GetInfo();
-	enum Value_number_in_info_array {
-		full_name = 3
-	};
-	&this->GetDolgnost();
 	std::cout << " | ";
-	std::cout << std::setfill(' ') << std::setw(45) << fio[full_name];
+	std::cout << std::setfill(' ') << std::setw(45) << fio[FIO::full_name];
 	std::cout << " | ";
 	std::cout << std::setw(20) << this->GetDolgnost() << " |" << std::endl;
 }

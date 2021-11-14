@@ -11,6 +11,6 @@ public: void PrintInfo();
 public: std::string GetName();
 public: std::array<std::string, 50> GetSymptoms();
 
-public: Disease();
-public: ~Disease();
+public: Disease() {};
+public: ~Disease() {};
 };

@@ -4,30 +4,29 @@
 #include <iomanip>
 
 //Функция создания структуры "Талон"
-Talon GetsTalonData(Doctor* med) {
+bool SetBool(int*);
+void Talon::SetTalon(Doctor* medic) {
 
-	Talon* talon = new Talon;
 	bool False_Input_Value;
 
 	std::cout << " <Ввод информации о талоне>" << std::endl;
-	SetDateData(&talon->Admission_Date);
-	SetTimeData(&talon->Admission_Time);
-	
+	this->Admission_Date.SetFormat();
+	this->Admission_Time.SetFormat();
+
 	do {
 		std::cout << " Номер кабинета: ";
-		False_Input_Value = GetKabinet(&talon->kabinet);
+		False_Input_Value = SetBool(&this->kabinet);
 		if (False_Input_Value) {
 			std::cout << "\n <Номер кабинета введен некорректно>" << std::endl;
 		}
 	} while (False_Input_Value);
 
-	talon->Dok = med;
+	this->medic = medic;
 
 	std::cout << " <Ввод завершён>" << std::endl;
-	return *talon; 
 }
 
-bool GetKabinet(int* kabinet ) {
+bool SetBool(int* kabinet) {
 	enum Limit_Value_for_Number {
 		Quantity_input_value = 1,
 		Minimum_value_for_number = 0,
@@ -44,16 +43,35 @@ bool GetKabinet(int* kabinet ) {
 	return False_Input_Value;
 }
 
+Date Talon::GetDate() {
+	return this->Admission_Date;
+}
 
-//Вывод структуры "Талон"
-void PutsTalonInfo(Talon talon) {
+Time Talon::GetTime() {
+	return this->Admission_Time;
+}
+
+int Talon::GetKabinet() {
+	return this->kabinet;
+}
+
+Doctor Talon::GetDoctor() {
+	return *this->medic;
+}
+
+void Talon::PrintInfo() {
+	std::array <std::string, 4> name = this->GetDoctor().GetFIO().GetInfo();
+	enum Value_number_im_info_array {
+		full_name = 3
+	};
+
 	std::cout << " | "; 
-	std::cout << std::setfill(' ') << std::setw(45) << talon.Dok->Fio.Full_Name;
+	std::cout << std::setfill(' ') << std::setw(45) << name[full_name];
 	std::cout << " | ";
-	PrintDateInfo(talon.Admission_Date);
+	this->Admission_Date.PrintInfo();
 	std::cout << " | ";
-	PrintTimeInfo(talon.Admission_Time);
+	this->Admission_Time.PrintInfo();
 	std::cout << " | ";
-	std::cout << std::setfill('0') << std::setw(3) << talon.kabinet << " |";
+	std::cout << std::setfill('0') << std::setw(3) << this->GetKabinet() << " |";
 	std::cout.fill(' ');
 }

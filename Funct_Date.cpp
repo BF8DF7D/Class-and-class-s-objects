@@ -25,10 +25,10 @@ bool Date::SetBool(){
 		Clean_input_stream = '\n'
 	};
 
-	bool False_Input_Value = scanf("%d.%d.%d", &this->day, &this->mounth, &this->year) != Quantity_input_value
-		|| (this->day <= Minimum_for_days_and_months || this->day > Maximum_day)
-		|| (this->mounth <= Minimum_for_days_and_months || this->mounth > Maximum_mounth)
-		|| (this->year <= Minimum_value_for_years || this->year > Maximum_years)
+	bool False_Input_Value = scanf("%d.%d.%d", &this->date[day], &this->date[mounth], &this->date[year]) != Quantity_input_value
+		|| (this->date[day] <= Minimum_for_days_and_months || this->date[day] > Maximum_day)
+		|| (this->date[mounth] <= Minimum_for_days_and_months || this->date[mounth] > Maximum_mounth)
+		|| (this->date[year] <= Minimum_value_for_years || this->date[year] > Maximum_years)
 		|| std::cin.get() != Clean_input_stream;
 	
 	if (False_Input_Value)
@@ -38,17 +38,11 @@ bool Date::SetBool(){
 }
 
 std::array<int, 3> Date::GetInfo() {
-	std::array<int, 3> date = { this->day, this->mounth, this->year };
-	return date;
+	return this->date;
 }
 
 void Date::PrintInfo() {
 	std::array<int,3> date = this->GetInfo();
-	enum Value_number_in_info_array {
-		day = 0,
-		mounth,
-		year
-	};
 
 	std::cout << std::setfill('0') << std::setw(2) << date[day] << ".";
 	std::cout << std::setfill('0') << std::setw(2) << date[mounth] << ".";

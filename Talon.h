@@ -2,13 +2,20 @@
 #include "Time.h"
 #include "Date.h"
 
-struct Talon{
-	Date Admission_Date;
-	Time Admission_Time;
-	int kabinet;
-	Doctor* Dok;
-};
+class Talon{
+private: Date Admission_Date;
+private: Time Admission_Time;
+private: int kabinet;
+private: Doctor* medic;
 
-Talon GetsTalonData(Doctor* );		//Функция создания структуры "Талон"
-bool GetKabinet(int*);
-void PutsTalonInfo(Talon);	//Вывод структуры "Талон"
+public: void SetTalon(Doctor*);
+public: void PrintInfo();
+
+public: Date GetDate();
+public: Time GetTime();
+public: int GetKabinet();
+public: Doctor GetDoctor();
+
+public: Talon() {};
+public: ~Talon() {};
+};
