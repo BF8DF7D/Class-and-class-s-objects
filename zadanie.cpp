@@ -8,9 +8,6 @@
 
 int main()
 {
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
-
     Disease* prosrtuda = new Disease, 
         *otravlenie = new Disease;
 
@@ -58,7 +55,7 @@ int main()
     bolnoi->PrintInfo();
 
     std::string Name_Disease;
-    std::cout << "Введите наименования болезни, чтобы узнать есть ли оно в истории болезни пациента" << std::endl;
+    std::cout << " Введите наименования болезни, чтобы узнать есть ли оно в истории болезни пациента" << std::endl;
     for (bool Exid_Value = false; !Exid_Value;) {
         std::cout << " Наименование : ";
         std::getline(std::cin, Name_Disease);
